@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verbes irréguliers – Révision par ceintures</title>
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#ffffff; --text:#1f2430; --muted:#667085; --border:#e3e1da;
+  --accent:#2f5bea; --accent-soft:#e8eefd; --on-accent:#ffffff;
+  --good:#1f8a4c; --good-soft:#e2f4ea; --bad:#c0392b; --bad-soft:#fbe9e7;
+  --shadow:0 6px 24px rgba(20,30,60,.08);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#14161b; --surface:#1d2027; --text:#eceef3; --muted:#9aa1b0; --border:#2c303a;
+    --accent:#7b9cff; --accent-soft:#232a42; --on-accent:#0b1020;
+    --good:#4cc487; --good-soft:#173326; --bad:#ff8a7a; --bad-soft:#3a1d1a;
+    --shadow:0 6px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+.app{max-width:780px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px}
+h2{font-size:1.15rem;margin:0 0 8px}
+.lead{color:var(--muted);margin:0 0 16px;font-size:.95rem}
+.muted{color:var(--muted)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.link-btn{background:none;border:none;color:var(--muted);text-decoration:underline;padding:0;font-size:.88rem}
+.btn{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:11px 18px;font-weight:600}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+
+/* ceintures */
+.belt{display:inline-block;font-size:.78rem;font-weight:700;padding:3px 12px;border-radius:99px;border:1px solid transparent;letter-spacing:.02em}
+.b-white{background:#ffffff;color:#333;border-color:#b9b9b9}
+.b-yellow{background:#ffe45c;color:#3a3000}
+.b-orange{background:#ffb347;color:#3d2400}
+.b-green{background:#6fd16f;color:#0f3a0f}
+.b-blue{background:#6ec6ff;color:#06304f}
+.b-black{background:#222;color:#fff;border-color:#666}
+
+/* étiquettes de colonnes (couleurs de la fiche) */
+.chip{display:inline-block;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:6px}
+.c-inf{background:#5ce1f2;color:#00333b}
+.c-pret{background:#ffe45c;color:#3a3000}
+.c-pp{background:#2a2ae0;color:#fff}
+.c-fr{background:#ff4fd8;color:#3d0033}
+
+/* menu */
+.toolbar{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.belt-block{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;overflow:hidden}
+.belt-head{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.belt-head .all{margin-left:auto;font-size:.85rem;display:flex;align-items:center;gap:6px;cursor:pointer}
+.series-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border)}
+.series-row:last-child{border-bottom:none}
+.series-row:hover{background:var(--accent-soft)}
+.series-row input,.belt-head input{width:18px;height:18px;accent-color:var(--accent);margin-top:2px;flex:none}
+.s-main{display:flex;flex-direction:column;gap:2px}
+.s-title{font-weight:600}
+.s-sub{font-size:.83rem;color:var(--muted)}
+.startbar{position:sticky;bottom:0;margin:16px -16px -40px;padding:12px 16px 16px;background:var(--bg);border-top:1px solid var(--border);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.startbar .sum{flex:1 1 180px;font-size:.92rem}
+.startbar select{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.tab{background:none;border:none;padding:10px 16px;border-bottom:3px solid transparent;margin-bottom:-1px;color:var(--muted);font-weight:600}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.badge-n{display:inline-block;min-width:22px;padding:0 7px;margin-left:4px;border-radius:99px;border:1px solid var(--bad);background:var(--bad-soft);color:var(--bad);font-size:.75rem;line-height:1.5;text-align:center}
+.wrow{display:flex;align-items:center;gap:8px;padding-right:12px;border-bottom:1px solid var(--border)}
+.wrow:last-child{border-bottom:none}
+.wmain{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;cursor:pointer;flex:1;min-width:0}
+.wmain:hover{background:var(--accent-soft)}
+.wmain input{width:18px;height:18px;accent-color:var(--accent);margin-top:2px;flex:none}
+.wtxt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.wforms{font-weight:700}
+.rm{flex:none;width:32px;height:32px;border:1px solid var(--border);border-radius:8px;background:none;color:var(--muted)}
+.rm:hover{color:var(--bad);border-color:var(--bad)}
+.empty-weak{text-align:center}
+
+/* quiz */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.9rem;color:var(--muted)}
+.progress{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.progress>div{height:100%;background:var(--accent);transition:width .25s}
+.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;font-size:.85rem;color:var(--muted)}
+.given{text-align:center;padding:10px 0 6px}
+.given .big{font-size:2.5rem;font-weight:700;line-height:1.15;margin-top:8px}
+.hint{text-align:center;font-size:.83rem;color:var(--muted);margin-top:4px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:20px 0 10px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field input{font-size:1.15rem;padding:10px 12px;border-radius:10px;border:2px solid var(--border);background:var(--bg);color:var(--text);width:100%}
+.field input:focus{outline:none;border-color:var(--accent)}
+.field input.ok{border-color:var(--good);background:var(--good-soft)}
+.field input.ko{border-color:var(--bad);background:var(--bad-soft)}
+.exp{font-size:.88rem;color:var(--bad);font-weight:600}
+.exp.okline{color:var(--good)}
+.result{margin:14px 0;padding:12px 14px;border-radius:12px;font-weight:600;display:none}
+.result.show{display:block}
+.result.ok{background:var(--good-soft);color:var(--good)}
+.result.ko{background:var(--bad-soft);color:var(--bad)}
+.result .recap{display:block;font-weight:500;color:var(--text);margin-top:4px;font-size:.92rem}
+.actions{display:flex;justify-content:center}
+
+/* compte rendu */
+.score{text-align:center;padding:8px 0 16px}
+.score .n{font-size:3rem;font-weight:800;line-height:1}
+.bars{display:flex;flex-direction:column;gap:10px;margin:12px 0 6px}
+.bar-row{display:grid;grid-template-columns:1fr 70px;gap:10px;align-items:center;font-size:.88rem}
+.bar-row .lbl{display:flex;flex-direction:column;gap:2px}
+.bar-row .meter{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.bar-row .meter>div{height:100%;background:var(--good)}
+.bar-row .v{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.wk{border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:var(--bg)}
+.wk .row{display:flex;flex-wrap:wrap;gap:6px 14px;font-weight:700;margin-bottom:6px}
+.wk .row span.sep{color:var(--muted);font-weight:400}
+.wk .errs{font-size:.88rem;color:var(--muted)}
+.wk .errs .wrong{color:var(--bad);text-decoration:line-through}
+.wk .errs b{color:var(--good)}
+.report-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media (max-width:520px){.given .big{font-size:2rem}.startbar{margin-left:-16px;margin-right:-16px}}
+@media (prefers-reduced-motion:reduce){.progress>div{transition:none}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+/* =====================  DONNÉES (d'après la fiche « Verbes irréguliers par ceintures »)  ===================== */
+const KEYS = ["inf","pret","pp","fr"];
+const LABELS = {inf:"Infinitif", pret:"Prétérit", pp:"Participe passé", fr:"Traduction"};
+const BELTS = {white:"White Belt", yellow:"Yellow Belt", orange:"Orange Belt", green:"Green Belt", blue:"Blue Belt", black:"Black Belt"};
+const BELT_ORDER = Object.keys(BELTS);
+
+/* [infinitif, prétérit, participe passé, traduction, variantes acceptées] */
+const SERIES = [
+ {id:"w1", belt:"white", title:"Les « I-A-U » sont faciles à retenir", v:[
+  ["sing","sang","sung","Chanter"],
+  ["begin","began","begun","Commencer"],
+  ["drink","drank","drunk","Boire"],
+  ["swim","swam","swum","Nager"],
+  ["ring","rang","rung","Sonner"]]},
+ {id:"w2", belt:"white", title:"Mes préférés : ceux qui ne changent pas", v:[
+  ["cut","cut","cut","Couper"],
+  ["bet","bet","bet","Parier"],
+  ["cost","cost","cost","Coûter"],
+  ["hit","hit","hit","Frapper"],
+  ["put","put","put","Mettre"],
+  ["let","let","let","Permettre"],
+  ["shut","shut","shut","Fermer"],
+  ["hurt","hurt","hurt","Blesser"]]},
+ {id:"y1", belt:"yellow", title:"Les plus irréguliers de tous", v:[
+  ["be","was / were","been","Être"],
+  ["go","went","gone","Aller"],
+  ["do","did","done","Faire"],
+  ["show","showed","shown","Montrer"],
+  ["see","saw","seen","Voir"],
+  ["wear","wore","worn","Porter (un vêtement)"],
+  ["draw","drew","drawn","Dessiner"]]},
+ {id:"y2", belt:"yellow", title:"Base verbale et participe passé identiques", v:[
+  ["run","ran","run","Courir"],
+  ["become","became","become","Devenir"],
+  ["come","came","come","Venir"]]},
+ {id:"o1", belt:"orange", title:"Les participes passés qui se terminent en « EN »", v:[
+  ["drive","drove","driven","Conduire"],
+  ["freeze","froze","frozen","Geler"],
+  ["break","broke","broken","Casser"],
+  ["choose","chose","chosen","Choisir"],
+  ["eat","ate","eaten","Manger"],
+  ["fall","fell","fallen","Tomber"],
+  ["forget","forgot","forgotten","Oublier"],
+  ["give","gave","given","Donner"],
+  ["hide","hid","hidden","Cacher"],
+  ["ride","rode","ridden","Aller à cheval, vélo, moto"],
+  ["speak","spoke","spoken","Parler"],
+  ["steal","stole","stolen","Voler, dérober"],
+  ["take","took","taken","Prendre"],
+  ["wake (up)","woke (up)","woken (up)","(se) réveiller"],
+  ["write","wrote","written","Écrire"],
+  ["forbid","forbade","forbidden","Interdire"],
+  ["forgive","forgave","forgiven","Pardonner"]]},
+ {id:"g1", belt:"green", title:"Les « EW » du prétérit et « OWN » du participe passé", v:[
+  ["fly","flew","flown","Voler"],
+  ["blow","blew","blown","Souffler"],
+  ["grow","grew","grown","Grandir"],
+  ["know","knew","known","Savoir, connaître"],
+  ["throw","threw","thrown","Jeter, lancer"]]},
+ {id:"g2", belt:"green", title:"Les [i:] (« I » longs) qui se transforment en son [e]", v:[
+  ["feed","fed","fed","Nourrir"],
+  ["bleed","bled","bled","Saigner"],
+  ["feel","felt","felt","(res)sentir",{fr:["se sentir"]}],
+  ["keep","kept","kept","Garder"],
+  ["leave","left","left","Partir, quitter, laisser"],
+  ["mean","meant","meant","Vouloir dire"],
+  ["meet","met","met","Rencontrer"],
+  ["read","read","read","Lire"],
+  ["sleep","slept","slept","Dormir"]]},
+ {id:"b1", belt:"blue", title:"Ceux qui aiment le « T », normal pour des Anglais !", v:[
+  ["burn","burnt","burnt","Brûler",{pret:["burned"],pp:["burned"]}],
+  ["build","built","built","Construire"],
+  ["dream","dreamt","dreamt","Rêver",{pret:["dreamed"],pp:["dreamed"]}],
+  ["learn","learnt","learnt","Apprendre",{pret:["learned"],pp:["learned"]}],
+  ["lend","lent","lent","Prêter"],
+  ["lose","lost","lost","Perdre"],
+  ["send","sent","sent","Envoyer"],
+  ["shoot","shot","shot","Tirer"],
+  ["smell","smelt","smelt","Sentir",{pret:["smelled"],pp:["smelled"]}],
+  ["spend","spent","spent","Passer du temps, dépenser de l'argent",{fr:["dépenser","passer"]}]]},
+ {id:"k1", belt:"black", title:"Prétérit et participe passé identiques", v:[
+  ["buy","bought","bought","Acheter"],
+  ["strike","struck","struck","Frapper"],
+  ["bring","brought","brought","Apporter"],
+  ["catch","caught","caught","Attraper"],
+  ["fight","fought","fought","Se battre",{fr:["combattre"]}],
+  ["find","found","found","Trouver"],
+  ["get","got","got","Recevoir, obtenir",{pp:["gotten"]}],
+  ["have","had","had","Avoir"],
+  ["sit","sat","sat","Asseoir",{fr:["s'asseoir"]}],
+  ["hear","heard","heard","Entendre"],
+  ["hold","held","held","Tenir"],
+  ["make","made","made","Faire, fabriquer"],
+  ["pay","paid","paid","Payer"],
+  ["say","said","said","Dire"],
+  ["sell","sold","sold","Vendre"],
+  ["stand","stood","stood","Se tenir debout",{fr:["être debout"]}],
+  ["understand","understood","understood","Comprendre"],
+  ["teach","taught","taught","Enseigner"],
+  ["tell","told","told","Dire, raconter"],
+  ["think","thought","thought","Penser"],
+  ["win","won","won","Gagner"]]}
+];
+
+/* =====================  CORRECTION (indulgente sur espaces / majuscules, stricte sur l'orthographe)  ===================== */
+function clean(s){ return String(s).toLowerCase().replace(/[’`´]/g,"'").replace(/\s+/g," ").replace(/[.!?]+$/,"").trim(); }
+function foldFr(s){ return clean(String(s).normalize("NFD").replace(/[̀-ͯ]/g,"")); }
+function splitParts(s){ return s.split(/\s*(?:\/|,|;|\bor\b|\bou\b|\bet\b|\band\b)\s*/).map(x=>x.trim()).filter(Boolean); }
+/* Les parenthèses sont facultatives : « (se) réveiller » → « se réveiller » ou « réveiller » ; « wake (up) » → « wake up » ou « wake » */
+function parenVariants(s){
+  if(!/\([^)]*\)/.test(s)) return [s];
+  const withIn = s.replace(/[()]/g,"").replace(/\s+/g," ").trim();
+  const without = s.replace(/\([^)]*\)/g,"").replace(/\s+/g," ").trim();
+  return [s, withIn, without];
+}
+function mkSet(display, extra, fold){
+  const s = new Set();
+  const add = t => { const n = fold(t); if(n) parenVariants(n).forEach(p => { if(p) s.add(p); }); };
+  add(display);
+  splitParts(fold(display)).forEach(add);
+  (extra||[]).forEach(add);
+  return s;
+}
+
+/* Traductions courantes acceptées en plus de celles de la fiche (le verbe anglais, lui, reste strict) */
+const EXTRA_FR = {
+  let:["laisser"], hurt:["faire mal"], mean:["signifier"], keep:["conserver"], grow:["pousser","cultiver"],
+  hide:["se cacher"], freeze:["congeler"], begin:["débuter"], break:["briser"], forbid:["défendre"],
+  build:["bâtir"], bring:["amener"], have:["posséder"], feed:["alimenter"], fight:["battre"],
+  sit:["s'asseoir","s'assoir","être assis"], stand:["être debout","se tenir","rester debout"]
+};
+/* « ride » : la fiche donne trois sens (cheval, vélo, moto). Toute réponse qui contient l'un de ces mots est acceptée. */
+const FR_KEYWORDS = {
+  ride:["monter","cheval","chevaux","chevauch","velo","moto","bicyclette","scooter","poney","equitation","rouler","pedal"]
+};
+
+const ALL = [];
+SERIES.forEach(s => s.v.forEach(r => {
+  const x = r[4] || {};
+  const v = {id:r[0], inf:r[0], pret:r[1], pp:r[2], fr:r[3], series:s.id, belt:s.belt};
+  v.acc = {
+    inf:  mkSet(v.inf,  x.inf,  clean),
+    pret: mkSet(v.pret, x.pret, clean),
+    pp:   mkSet(v.pp,   x.pp,   clean),
+    fr:   mkSet(v.fr,   (x.fr||[]).concat(EXTRA_FR[v.id]||[]), foldFr)
+  };
+  v.frTokens = mkSet(v.fr, null, foldFr);   /* sens affichés sur la fiche : repère les verbes qui partagent une traduction */
+  v.frWords = FR_KEYWORDS[v.id] || null;
+  ALL.push(v);
+}));
+
+const STRIP = {
+  inf:  s => s.replace(/^to\s+/, ""),
+  pret: s => s.replace(/^(i|you|he|she|it|we|they)\s+/, ""),
+  pp:   s => s,
+  fr:   s => s
+};
+function check(input, key, verb){
+  const fold = key==="fr" ? foldFr : clean;
+  const strip = STRIP[key];
+  const whole = strip(fold(input));
+  if(!whole) return false;
+  const acc = verb.acc[key];
+  if(acc.has(whole)) return true;
+  if(key==="fr" && verb.frWords && verb.frWords.some(w => new RegExp("(^|[^a-z])"+w).test(whole))) return true;
+  const parts = splitParts(fold(input)).map(strip).filter(Boolean);
+  return parts.length>0 && parts.every(p => acc.has(p));
+}
+/* Plusieurs verbes peuvent partager une traduction (ex. « Frapper » = hit / strike) */
+function candidates(v){
+  return ALL.filter(c => c===v || [...v.frTokens].some(t => c.acc.fr.has(t)));
+}
+function grade(it, answers){
+  const keys = KEYS.filter(k => k!==it.clue);
+  const cands = it.clue==="fr" ? candidates(it.v) : [it.v];
+  let best = null;
+  for(const c of cands){
+    const fields = {}; let n = 0;
+    for(const k of keys){
+      const ok = check(answers[k]||"", k, c);
+      fields[k] = {ok, expected:c[k], given:answers[k]||""};
+      if(ok) n++;
+    }
+    const score = n + (c===it.v ? .5 : 0);
+    if(!best || score>best.score) best = {c, fields, n, score};
+  }
+  return {verb:best.c, fields:best.fields, ok:best.n===keys.length, alt:best.c!==it.v, keys};
+}
+
+/* ---------- UI ---------- */
+const $ = s => document.querySelector(s);
+const app = () => document.getElementById("app");
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const seriesById = id => SERIES.find(s => s.id===id);
+
+const KEY = "verbes-ceintures-v1";
+let store = {weak:[], sel:[], n:"all"};
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if(s && typeof s==="object") store = Object.assign(store, s); } catch(e) {}
+store.weak = Array.isArray(store.weak) ? store.weak.filter(id => ALL.some(v => v.id===id)) : [];
+store.sel = Array.isArray(store.sel) ? store.sel.filter(id => seriesById(id)) : [];
+if(!["all","10","20","30"].includes(String(store.n))) store.n = "all";
+function persist(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e) {} }
+store.errs = (store.errs && typeof store.errs==="object" && !Array.isArray(store.errs)) ? store.errs : {};
+/* bad=true : le verbe entre dans la liste « à retravailler » (et son compteur d'erreurs augmente) ; bad=false : il en sort */
+function setWeak(id, bad){
+  const i = store.weak.indexOf(id);
+  if(bad){ if(i<0) store.weak.push(id); store.errs[id] = (store.errs[id]||0)+1; }
+  else { if(i>=0) store.weak.splice(i,1); delete store.errs[id]; }
+  persist();
+}
+
+let sel = new Set(store.sel);
+let session = null;
+let clearArmed = false, clearTimer = null;
+
+/* ----- Menu ----- */
+let menuTab = "series";   /* "series" ou "weak" */
+let weakSel = null;       /* verbes cochés dans l'onglet « À retravailler » (null = tous) */
+
+function renderMenu(){
+  if(session){ weakSel = null; session = null; }
+  const weakN = store.weak.length;
+  app().innerHTML = `
+    <h1>Verbes irréguliers</h1>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-series" aria-selected="${menuTab==="series"}">Choisir des séries</button>
+      <button class="tab" role="tab" id="tab-weak" aria-selected="${menuTab==="weak"}">À retravailler${weakN ? ` <span class="badge-n">${weakN}</span>` : ""}</button>
+    </div>
+    <div id="tabBody"></div>`;
+  $("#tab-series").onclick = () => { menuTab = "series"; renderMenu(); };
+  $("#tab-weak").onclick = () => { menuTab = "weak"; renderMenu(); };
+  if(menuTab==="weak") renderWeakTab(); else renderSeriesTab();
+}
+
+/* ----- Onglet 1 : choix des séries ----- */
+function renderSeriesTab(){
+  const blocks = BELT_ORDER.map(b => {
+    const ss = SERIES.filter(s => s.belt===b);
+    const count = ss.reduce((n,s)=>n+s.v.length, 0);
+    return `<section class="belt-block">
+      <div class="belt-head"><span class="belt b-${b}">${BELTS[b]}</span><span class="muted">${count} verbes</span>
+        <label class="all"><input type="checkbox" data-belt="${b}"> Toute la ceinture</label></div>
+      ${ss.map(s => {
+        const prev = s.v.slice(0,4).map(r=>r[0]).join(", ") + (s.v.length>4 ? "…" : "");
+        return `<label class="series-row"><input type="checkbox" data-series="${s.id}">
+          <span class="s-main"><span class="s-title">${s.title}</span><span class="s-sub">${s.v.length} verbes · ${prev}</span></span></label>`;
+      }).join("")}
+    </section>`;
+  }).join("");
+
+  $("#tabBody").innerHTML = `
+    <p class="lead">Choisis les séries à réviser. À chaque carte, une forme est donnée au hasard (infinitif, prétérit, participe passé ou traduction) et tu écris les trois autres.</p>
+    <div class="toolbar">
+      <button class="link-btn" id="selAll">Tout sélectionner</button>
+      <button class="link-btn" id="selNone">Tout désélectionner</button>
+    </div>
+    ${blocks}
+    <div class="startbar">
+      <div class="sum" id="sum"></div>
+      <label class="muted">Cartes :
+        <select id="nSel">
+          <option value="all">Tous les verbes</option><option value="10">10</option><option value="20">20</option><option value="30">30</option>
+        </select></label>
+      <button class="btn primary" id="go">Commencer</button>
+    </div>`;
+
+  $("#nSel").value = store.n;
+  document.querySelectorAll("[data-series]").forEach(cb => cb.onchange = () => {
+    cb.checked ? sel.add(cb.dataset.series) : sel.delete(cb.dataset.series); syncMenu();
+  });
+  document.querySelectorAll("[data-belt]").forEach(cb => cb.onchange = () => {
+    SERIES.filter(s => s.belt===cb.dataset.belt).forEach(s => cb.checked ? sel.add(s.id) : sel.delete(s.id)); syncMenu();
+  });
+  $("#selAll").onclick = () => { SERIES.forEach(s => sel.add(s.id)); syncMenu(); };
+  $("#selNone").onclick = () => { sel.clear(); syncMenu(); };
+  $("#nSel").onchange = e => { store.n = e.target.value; persist(); syncMenu(); };
+  $("#go").onclick = () => startSession(buildPool());
+  syncMenu();
+}
+
+/* ----- Onglet 2 : verbes à retravailler ----- */
+function renderWeakTab(){
+  const body = $("#tabBody");
+  const weak = ALL.filter(v => store.weak.includes(v.id));
+  if(!weak.length){
+    body.innerHTML = `<div class="panel empty-weak"><h2>Rien à retravailler pour l'instant</h2>
+      <p class="muted">Les verbes que tu rates pendant une séance s'ajoutent ici. Ils en sortent dès que tu les réussis.</p>
+      <button class="btn primary" id="toSeries">Choisir des séries</button></div>`;
+    $("#toSeries").onclick = () => { menuTab = "series"; renderMenu(); };
+    return;
+  }
+  weakSel = weakSel===null ? new Set(weak.map(v => v.id)) : new Set([...weakSel].filter(id => store.weak.includes(id)));
+
+  const groups = BELT_ORDER.map(b => {
+    const vs = weak.filter(v => v.belt===b);
+    if(!vs.length) return "";
+    return `<section class="belt-block">
+      <div class="belt-head"><span class="belt b-${b}">${BELTS[b]}</span><span class="muted">${vs.length} verbe${vs.length>1?"s":""}</span></div>
+      ${vs.map(v => {
+        const n = store.errs[v.id] || 1;
+        return `<div class="wrow">
+          <label class="wmain"><input type="checkbox" data-w="${esc(v.id)}">
+            <span class="wtxt"><span class="wforms">${esc(v.inf)} → ${esc(v.pret)} → ${esc(v.pp)}</span>
+              <span class="s-sub">${esc(v.fr)} · ${esc(seriesById(v.series).title)} · raté ${n} fois</span></span></label>
+          <button class="rm" data-rm="${esc(v.id)}" title="Retirer de la liste" aria-label="Retirer ${esc(v.inf)} de la liste">✕</button>
+        </div>`;
+      }).join("")}
+    </section>`;
+  }).join("");
+
+  body.innerHTML = `
+    <p class="lead">Les verbes qui t'ont posé problème lors de tes séances précédentes. Un verbe sort de la liste dès que tu le réussis.</p>
+    <div class="toolbar">
+      <button class="link-btn" id="wAll">Tout sélectionner</button>
+      <button class="link-btn" id="wNone">Tout désélectionner</button>
+      <button class="link-btn" id="weakClear">${clearArmed ? "Confirmer ?" : "Vider la liste"}</button>
+    </div>
+    ${groups}
+    <div class="startbar">
+      <div class="sum" id="wsum"></div>
+      <button class="btn primary" id="wgo">Réviser</button>
+    </div>`;
+
+  document.querySelectorAll("[data-w]").forEach(cb => cb.onchange = () => {
+    cb.checked ? weakSel.add(cb.dataset.w) : weakSel.delete(cb.dataset.w); syncWeak();
+  });
+  document.querySelectorAll("[data-rm]").forEach(btn => btn.onclick = () => {
+    setWeak(btn.dataset.rm, false); weakSel.delete(btn.dataset.rm); renderMenu();
+  });
+  $("#wAll").onclick = () => { store.weak.forEach(id => weakSel.add(id)); syncWeak(); };
+  $("#wNone").onclick = () => { weakSel.clear(); syncWeak(); };
+  $("#wgo").onclick = () => startSession(ALL.filter(v => weakSel.has(v.id)));
+  $("#weakClear").onclick = () => {
+    if(!clearArmed){ clearArmed = true; clearTimer = setTimeout(()=>{ clearArmed=false; if(!session) renderMenu(); }, 3500); renderMenu(); }
+    else { clearTimeout(clearTimer); clearArmed = false; store.weak = []; store.errs = {}; persist(); weakSel = null; renderMenu(); }
+  };
+  syncWeak();
+}
+function syncWeak(){
+  document.querySelectorAll("[data-w]").forEach(cb => cb.checked = weakSel.has(cb.dataset.w));
+  const n = weakSel.size;
+  $("#wsum").innerHTML = n ? `<b>${n}</b> verbe${n>1?"s":""} sélectionné${n>1?"s":""}` : `<span class="muted">Aucun verbe sélectionné</span>`;
+  $("#wgo").disabled = !n;
+  $("#wgo").textContent = n ? `Réviser ${n} verbe${n>1?"s":""}` : "Réviser";
+}
+function syncMenu(){
+  document.querySelectorAll("[data-series]").forEach(cb => cb.checked = sel.has(cb.dataset.series));
+  document.querySelectorAll("[data-belt]").forEach(cb => {
+    const ss = SERIES.filter(s => s.belt===cb.dataset.belt);
+    const n = ss.filter(s => sel.has(s.id)).length;
+    cb.checked = n===ss.length; cb.indeterminate = n>0 && n<ss.length;
+  });
+  const ss = SERIES.filter(s => sel.has(s.id));
+  const nv = ss.reduce((n,s)=>n+s.v.length, 0);
+  $("#sum").innerHTML = ss.length ? `<b>${nv}</b> verbes · ${ss.length} série${ss.length>1?"s":""}` : `<span class="muted">Aucune série sélectionnée</span>`;
+  $("#go").disabled = !ss.length;
+  store.sel = [...sel]; persist();
+}
+function buildPool(){
+  const ss = SERIES.filter(s => sel.has(s.id));
+  const all = ALL.filter(v => sel.has(v.series));
+  const n = store.n==="all" ? all.length : Math.min(parseInt(store.n,10), all.length);
+  if(n>=all.length) return all;
+  /* on garde au moins un verbe de chaque série choisie, puis on complète au hasard */
+  const picked = new Set();
+  shuffle(ss.slice()).slice(0,n).forEach(s => {
+    const vs = all.filter(v => v.series===s.id);
+    picked.add(vs[Math.floor(Math.random()*vs.length)]);
+  });
+  const rest = shuffle(all.filter(v => !picked.has(v)));
+  while(picked.size<n && rest.length) picked.add(rest.pop());
+  return [...picked];
+}
+
+/* ----- Séance ----- */
+function startSession(pool){
+  pool = [...new Set(pool)];
+  if(!pool.length) return;
+  clearTimeout(clearTimer); clearArmed = false;
+  session = {
+    pool: pool.slice(),
+    items: shuffle(pool.slice()).map(v => ({v, clue: KEYS[Math.floor(Math.random()*KEYS.length)]})),
+    i: 0, results: [], validated: false
+  };
+  renderQuiz();
+  window.scrollTo(0,0);
+}
+function renderQuiz(){
+  const it = session.items[session.i];
+  const total = session.items.length;
+  const s = seriesById(it.v.series);
+  const keys = KEYS.filter(k => k!==it.clue);
+  const good = session.results.filter(r => r.ok).length;
+  const multi = it.clue==="fr" && candidates(it.v).length>1;
+  session.validated = false;
+
+  app().innerHTML = `
+    <div class="topbar"><button class="link-btn" id="back">← Menu</button><span>Carte ${session.i+1} / ${total} · ${good} bonne${good>1?"s":""} réponse${good>1?"s":""}</span></div>
+    <div class="progress"><div style="width:${session.i/total*100}%"></div></div>
+    <div class="panel">
+      <div class="meta"><span class="belt b-${it.v.belt}">${BELTS[it.v.belt]}</span><span>${s.title}</span></div>
+      <div class="given"><span class="chip c-${it.clue}">${LABELS[it.clue]}</span><div class="big">${it.v[it.clue]}</div></div>
+      ${multi ? `<div class="hint">Plusieurs verbes anglais ont cette traduction : un seul suffit.</div>` : ""}
+      <div class="fields">
+        ${keys.map(k => `<div class="field"><span class="chip c-${k}">${LABELS[k]}</span>
+          <input id="in-${k}" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="${LABELS[k]}">
+          <div class="exp" id="exp-${k}"></div></div>`).join("")}
+      </div>
+      <div class="result" id="result" aria-live="polite"></div>
+      <div class="actions"><button class="btn primary" id="valid">Valider ma réponse</button></div>
+    </div>`;
+
+  $("#back").onclick = renderMenu;
+  $("#valid").onclick = onAction;
+  keys.forEach((k, idx) => {
+    $("#in-"+k).onkeydown = e => {
+      if(e.key!=="Enter") return;
+      e.preventDefault();
+      if(session.validated) { onAction(); return; }
+      if(idx<keys.length-1) $("#in-"+keys[idx+1]).focus(); else onAction();
+    };
+  });
+  $("#in-"+keys[0]).focus();
+}
+function onAction(){
+  if(session.validated){
+    session.i++;
+    if(session.i>=session.items.length) renderReport(); else renderQuiz();
+    return;
+  }
+  const it = session.items[session.i];
+  const keys = KEYS.filter(k => k!==it.clue);
+  const answers = {}; keys.forEach(k => answers[k] = $("#in-"+k).value);
+  const g = grade(it, answers);
+
+  keys.forEach(k => {
+    const f = g.fields[k], inp = $("#in-"+k);
+    inp.disabled = true; inp.classList.add(f.ok ? "ok" : "ko");
+    if(!f.ok){ $("#exp-"+k).textContent = "Réponse : " + f.expected; }
+  });
+  const v = g.verb;
+  const recap = `${v.inf} · ${v.pret} · ${v.pp} · ${v.fr}`;
+  const res = $("#result");
+  res.className = "result show " + (g.ok ? "ok" : "ko");
+  res.innerHTML = (g.ok ? "✓ Bonne réponse !" : "✗ À retravailler") +
+    (g.ok && g.alt ? `<span class="recap">Tu as répondu avec « ${v.inf} » : c'est correct aussi (la fiche attendait « ${it.v.inf} »).</span>` : "") +
+    `<span class="recap">${esc(recap)}</span>`;
+
+  session.results.push({v:it.v, clue:it.clue, ok:g.ok, fields:g.fields, keys:g.keys, verb:g.verb});
+  if(g.ok){ setWeak(it.v.id, false); setWeak(g.verb.id, false); } else setWeak(g.verb.id, true);
+  session.validated = true;
+  const btn = $("#valid");
+  btn.textContent = session.i+1>=session.items.length ? "Voir le compte rendu" : "Carte suivante →";
+  setTimeout(() => btn.focus(), 0);
+}
+
+/* ----- Compte rendu ----- */
+function renderReport(){
+  const r = session.results, total = r.length, good = r.filter(x=>x.ok).length;
+  const pct = Math.round(good/total*100);
+  const weak = r.filter(x=>!x.ok);
+  const msg = pct===100 ? "Sans faute, bravo !" : pct>=80 ? "Très bon travail." : pct>=60 ? "C'est bien, il reste quelques verbes à fixer." : "Continue, ça va venir : relis bien la liste ci-dessous.";
+
+  const bySeries = SERIES.map(s => {
+    const rs = r.filter(x => x.v.series===s.id);
+    return {s, n:rs.length, ok:rs.filter(x=>x.ok).length};
+  }).filter(x => x.n>0);
+
+  const weakHtml = weak.length ? weak.map(x => {
+    const v = x.verb;
+    const errs = x.keys.filter(k => !x.fields[k].ok).map(k =>
+      `${LABELS[k].toLowerCase()} : <span class="wrong">${esc(x.fields[k].given.trim() || "—")}</span> → <b>${esc(x.fields[k].expected)}</b>`).join(" · ");
+    return `<div class="wk"><div class="row"><span>${esc(v.inf)}</span><span class="sep">→</span><span>${esc(v.pret)}</span><span class="sep">→</span><span>${esc(v.pp)}</span><span class="sep">·</span><span>${esc(v.fr)}</span></div>
+      <div class="errs"><span class="belt b-${v.belt}" style="font-size:.7rem;padding:1px 8px">${BELTS[v.belt]}</span> ${errs}</div></div>`;
+  }).join("") : `<p>Aucun verbe à retravailler sur cette série. 🎉</p>`;
+
+  app().innerHTML = `
+    <h1>Compte rendu</h1>
+    <div class="panel">
+      <div class="score"><div class="n">${good} / ${total}</div><div class="muted">${pct} % de cartes réussies</div><p>${msg}</p></div>
+      <h2>Par série</h2>
+      <div class="bars">${bySeries.map(x => `<div class="bar-row"><div class="lbl"><span><span class="belt b-${x.s.belt}" style="font-size:.7rem;padding:1px 8px">${BELTS[x.s.belt]}</span> ${x.s.title}</span><div class="meter"><div style="width:${x.ok/x.n*100}%"></div></div></div><div class="v">${x.ok} / ${x.n}</div></div>`).join("")}</div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <h2>Verbes à retravailler (${weak.length})</h2>
+      ${weakHtml}
+    </div>
+    <div class="report-actions">
+      ${weak.length ? `<button class="btn primary" id="again-weak">Refaire les ${weak.length} verbe${weak.length>1?"s":""} à retravailler</button>` : ""}
+      <button class="btn" id="again-all">Rejouer ces mêmes verbes</button>
+      <button class="btn" id="to-menu">Retour au menu</button>
+    </div>`;
+  const aw = $("#again-weak"); if(aw) aw.onclick = () => startSession([...new Set(weak.map(x => x.verb))]);
+  $("#again-all").onclick = () => startSession(session.pool);
+  $("#to-menu").onclick = renderMenu;
+  window.scrollTo(0,0);
+}
+
+if(typeof document !== "undefined" && document.getElementById("app")) renderMenu();
+</script>
+</body>
+</html>
